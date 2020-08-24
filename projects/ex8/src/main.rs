@@ -53,13 +53,15 @@ fn main() {
     }
     println!("pig latin={:?}", pigl);
 
-    let text = vec!["Add Sally to Engineering", "Add Amir to Sales"];
+    let text = vec![
+        "Add Sally to Engineering",
+        "Add Amir to Sales",
+        "Add Foo to Production",
+        "Add Fee to Support",
+        "Add Foo to R&D",
+        "Add Fee to R&D",
+    ];
     let mut comp = HashMap::new();
-    comp.insert("Production", vec!["Foo"]);
-    comp.insert("Support", vec!["Fee"]);
-    comp.insert("R&D", vec!["Foo", "Fee"]);
-//    comp.insert("Sales", vec!["Amir"]);
-//    comp.insert("Engineering", vec!["Sally"]);
     for t in text {
         let mut i = t.split_whitespace();
         let verb = i.next().expect("verb not found");
