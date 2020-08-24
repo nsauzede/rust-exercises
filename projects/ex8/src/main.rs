@@ -53,17 +53,21 @@ fn main() {
     }
     println!("pig latin={:?}", pigl);
 
-    let text = vec![
-        "Add Sally to Engineering",
-        "Add Amir to Sales",
-        "Add Foo to Production",
-        "Add Fee to Support",
-        "Add Foo to R&D",
-        "Add Fee to R&D",
-    ];
+    let _text =
+"Add Sally to Engineering\n\
+Add Amir to Sales\n\
+Add Foo to Production\n\
+Add Fee to Support\n\
+Add Foo to R&D\n\
+Add Fee to R&D\n";
+    let text: Vec<&str> = _text.split("\n").collect();
+//    println!("text={:?}", text);
     let mut comp = HashMap::new();
     for t in text {
+//        println!("t={:?}", t);
+        if t.len() == 0 { continue }
         let mut i = t.split_whitespace();
+//        println!("i={:?}", i);
         let verb = i.next().expect("verb not found");
         let emp = i.next().expect("emp not found");
         let dir = i.next().expect("dir not found");
@@ -71,7 +75,7 @@ fn main() {
         if verb != "Add" && dir != "to" {
             continue;
         }
-        let mut d = comp.entry(dept).or_insert(vec![]);
+        let d = comp.entry(dept).or_insert(vec![]);
         d.push(emp);
     }
     let mut depts: Vec<&str> = comp.keys().cloned().collect();
