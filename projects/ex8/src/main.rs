@@ -53,13 +53,47 @@ fn main() {
     }
     println!("pig latin={:?}", pigl);
 
-    let text = "Add Sally to Engineering";
+    let text = vec!["Add Sally to Engineering", "Add Amir to Sales"];
     let mut comp = HashMap::new();
+    comp.insert("Production", vec!["Foo"]);
+    comp.insert("Support", vec!["Fee"]);
     comp.insert("R&D", vec!["Foo", "Fee"]);
-    for (k,v) in comp {
-        println!("All people in department '{}':", k);
-        for emp in v.sort() {
-            println!("  {}", emp);
+//    comp.insert("Sales", vec!["Amir"]);
+//    comp.insert("Engineering", vec!["Sally"]);
+    for t in text {
+        let mut i = t.split_whitespace();
+        let verb = i.next().expect("verb not found");
+        let emp = i.next().expect("emp not found");
+        let dir = i.next().expect("dir not found");
+        let dept = i.next().expect("dept not found");
+        if verb != "Add" && dir != "to" {
+            continue;
         }
+        let mut d = comp.entry(dept).or_insert(vec![]);
+        d.push(emp);
+    }
+    let mut depts: Vec<&str> = comp.keys().cloned().collect();
+    depts.sort();
+    println!("depts={:#?}", depts);
+    for d in depts {
+        println!("All people in department '{}':", d);
+        let mut emps = comp.get(d).cloned().expect("dept not found");
+        emps.sort();
+        println!("{:?}", emps);
+    }
+    let mut emps: HashMap<&str, Vec<&str>> = HashMap::new();
+    for (k,v) in comp {
+        for emp in v {
+            let n = emps.entry(emp).or_insert(Vec::new());
+            n.push(k);
+        }
+    }
+    let mut semps: Vec<&str> = emps.keys().cloned().collect();
+    semps.sort();
+    for e in semps {
+        println!("All depts for employee '{}':", e);
+        let mut depts = emps.get(e).cloned().expect("emp not found");
+        depts.sort();
+        println!("{:?}", depts);
     }
 }
