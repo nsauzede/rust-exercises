@@ -43,7 +43,7 @@ fn main() {
     let s = "first";//irst-fay
     println!("s={:?}", s);
     let vow = ["a", "e", "i", "o", "u", "y"];
-    let mut pigl = String::new();
+    let pigl;
     if vow.contains(&&s[0..1]) {
         println!("starts with vowel");
         pigl = format!("{}-hay", s);
