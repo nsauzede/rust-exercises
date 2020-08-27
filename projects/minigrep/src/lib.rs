@@ -15,7 +15,7 @@ mod tests {
     #[test]
     fn config_ok() {
         assert_eq!(
-            Config::new(&vec![
+            Config::new0(&vec![
                 "progname".to_string(),
                 "needle".to_string(),
                 "haystack".to_string(),
@@ -32,12 +32,12 @@ mod tests {
     #[should_panic]
     fn config_fail() {
         // following should panic because first arg (progname) is missing
-        Config::new(&vec!["needle".to_string(), "haystack".to_string()])
+        Config::new0(&vec!["needle".to_string(), "haystack".to_string()])
             .expect("Failed to create Config");
     }
     #[test]
     fn run_ok() {
-        let config = Config::new(&vec![
+        let config = Config::new0(&vec![
             "progname".to_string(),
             "the".to_string(),
             "/dev/null".to_string(),
@@ -51,7 +51,7 @@ mod tests {
     #[test]
     #[should_panic]
     fn run_fail() {
-        let config = Config::new(&vec![
+        let config = Config::new0(&vec![
             "progname".to_string(),
             "the".to_string(),
             "/dev/notnull".to_string(),
@@ -88,33 +88,46 @@ Trust me.";
 }
 
 pub fn search_case_insensitive<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
-    let query = query.to_lowercase();
-    let mut results = Vec::new();
-    for line in contents.lines() {
-        if line.to_lowercase().contains(&query) {
-            results.push(line);
-        }
-    }
-    results
+    contents
+        .lines()
+        .filter(|line| line.to_lowercase().contains(&query.to_lowercase()))
+        .collect()
 }
 
 pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
-    let mut results = Vec::new();
-    for line in contents.lines() {
-        if line.contains(query) {
-            results.push(line);
-        }
-    }
-    results
+    contents
+        .lines()
+        .filter(|line| line.contains(query))
+        .collect()
 }
 
 impl Config {
-    pub fn new(args: &[String]) -> Result<Config, &'static str> {
+    // this old code is kept becauses unit tests depend on it
+    // how could we synthesize arbitrary env::Args otherwise ?
+    #[cfg(test)]
+    fn new0(args: &[String]) -> Result<Config, &'static str> {
         if args.len() < 3 {
             return Err("not enough arguments");
         }
         let query = args[1].clone();
         let filename = args[2].clone();
+        let case_sensitive = env::var("CASE_INSENSITIVE").is_err();
+        Ok(Config {
+            query,
+            filename,
+            case_sensitive,
+        })
+    }
+    pub fn new(mut args: std::env::Args) -> Result<Config, &'static str> {
+        args.next();
+        let query = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't get a query string"),
+        };
+        let filename = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't get a file name"),
+        };
         let case_sensitive = env::var("CASE_INSENSITIVE").is_err();
         Ok(Config {
             query,
