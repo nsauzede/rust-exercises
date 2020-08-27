@@ -16,10 +16,12 @@ pub struct Guess {
 
 impl Guess {
     pub fn new(value: i32) -> Guess {
-//        if value < 1 || value > 100 {
-//        if value < 1 {
-//            panic!("Guess value must be between 1 and 100, got {}.", value);
-//        }
+        //if value < 1 || value > 100 {
+        /*
+        if value < 1 {
+            panic!("Guess value must be between 1 and 100, got {}.", value);
+        }
+        */
         if value < 1 {
             panic!(
                 "Guess value must be greater than or equal to 1, got {}.",
@@ -46,7 +48,7 @@ fn internal_adder(a: i32, b: i32) -> i32 {
 
 pub fn greeting(name: &str) -> String {
     format!("Hello {}!", name)
-//    format!("Hello!")
+    //format!("Hello!")
 }
 
 #[cfg(test)]
@@ -101,8 +103,8 @@ mod tests {
             height: 7,
         };
         let r2 = Rectangle {
-            width: 5+3,
-            height: 1+6,
+            width: 5 + 3,
+            height: 1 + 6,
         };
 
         assert_eq!(r1, r2);

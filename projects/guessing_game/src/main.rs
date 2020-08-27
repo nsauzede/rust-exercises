@@ -29,8 +29,9 @@ fn main() {
             .read_line(&mut guess)
             .expect("Failed to read line");
 
-//        let guess: u32 = guess.trim().parse().expect("please type a number!");
-/*        let guess: u32 = match guess.trim().parse() {
+        //let guess: u32 = guess.trim().parse().expect("please type a number!");
+        /*
+        let guess: u32 = match guess.trim().parse() {
             Ok(num) => num,
             Err(_) => continue,
         };
@@ -38,7 +39,7 @@ fn main() {
             println!("The secret number will be between 1 and 100.");
             continue;
         }
-*/
+        */
         let guess = Guess::new(guess.trim().parse().expect("please type a number!")).value();
         println!("You guessed: {}", guess);
         match guess.cmp(&secret_number) {

@@ -5,8 +5,10 @@ fn main() {
     let mut index = 6;
     if now.elapsed().unwrap() > Duration::from_secs(0) {
         index = 10;
-//    } else {
-//        index = 6;
+        /*
+        } else {
+            index = 6;
+            */
     }
 
     let element = a[index];

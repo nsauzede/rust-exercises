@@ -1,6 +1,8 @@
 use std::collections::HashMap;
 fn main() {
-    let l = vec![2, 300, 1, 30, 2, 301, 21, 56, 1, 7, 19, 300, 2, 300, 56, 12, 300];
+    let l = vec![
+        2, 300, 1, 30, 2, 301, 21, 56, 1, 7, 19, 300, 2, 300, 56, 12, 300,
+    ];
     let mut sum = 0;
     let mut n = 0;
     for i in &l {
@@ -39,8 +41,8 @@ fn main() {
     println!("median={}", median);
     println!("mode={}", mode);
 
-//    let s = "apple";//apple-hay
-    let s = "first";//irst-fay
+    //let s = "apple";//apple-hay
+    let s = "first"; //irst-fay
     println!("s={:?}", s);
     let vow = ["a", "e", "i", "o", "u", "y"];
     let pigl;
@@ -53,21 +55,22 @@ fn main() {
     }
     println!("pig latin={:?}", pigl);
 
-    let _text =
-"Add Sally to Engineering\n\
+    let _text = "Add Sally to Engineering\n\
 Add Amir to Sales\n\
 Add Foo to Production\n\
 Add Fee to Support\n\
 Add Foo to R&D\n\
 Add Fee to R&D\n";
     let text: Vec<&str> = _text.split("\n").collect();
-//    println!("text={:?}", text);
+    //println!("text={:?}", text);
     let mut comp = HashMap::new();
     for t in text {
-//        println!("t={:?}", t);
-        if t.len() == 0 { continue }
+        //println!("t={:?}", t);
+        if t.len() == 0 {
+            continue;
+        }
         let mut i = t.split_whitespace();
-//        println!("i={:?}", i);
+        //println!("i={:?}", i);
         let verb = i.next().expect("verb not found");
         let emp = i.next().expect("emp not found");
         let dir = i.next().expect("dir not found");
@@ -88,7 +91,7 @@ Add Fee to R&D\n";
         println!("{:?}", emps);
     }
     let mut emps: HashMap<&str, Vec<&str>> = HashMap::new();
-    for (k,v) in comp {
+    for (k, v) in comp {
         for emp in v {
             let n = emps.entry(emp).or_insert(Vec::new());
             n.push(k);

@@ -33,19 +33,19 @@ impl Summary for Tweet {
     }
 }
 pub fn notify<T>(item: &T)
-    where T: Summary {
+where
+    T: Summary,
+{
     println!("Breaking news! {}", item.summarize());
 }
 fn main() {
     let tweet = Tweet {
         username: String::from("horse_ebooks"),
-        content: String::from(
-            "of course, as you probably already know, people",
-        ),
+        content: String::from("of course, as you probably already know, people"),
         reply: false,
         retweet: false,
     };
-//    println!("1 new tweet: {}", tweet.summarize());
+    //println!("1 new tweet: {}", tweet.summarize());
     notify(&tweet);
     let article = NewsArticle {
         headline: String::from("Penguins win the Stanley Cup Championship!"),
@@ -56,6 +56,6 @@ fn main() {
              hockey team in the NHL.",
         ),
     };
-//    println!("New article available!: {}", article.summarize());
+    //println!("New article available!: {}", article.summarize());
     notify(&article);
 }

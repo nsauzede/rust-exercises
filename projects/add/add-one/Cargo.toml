@@ -1,10 +1,8 @@
 [package]
-name = "guessing_game"
+name = "add-one"
 version = "0.1.0"
 authors = ["Nicolas Sauzede <nsauzede@laposte.net>"]
 edition = "2018"
-description = "A fun game where you guess what number the computer has chosen."
-license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
