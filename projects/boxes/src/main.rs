@@ -1,9 +1,6 @@
 use crate::List::{Cons, Nil};
 use std::ops::Deref;
-
-fn type_of<T>(_: &T) -> String {
-    format!("{}", std::any::type_name::<T>())
-}
+use mytools;
 
 #[derive(Debug)]
 enum List {
@@ -33,13 +30,13 @@ fn hello(name: &str) {
 
 fn main() {
     let b = Box::new(0b_1010_0101);
-    println!("*b = {:?} ({})", *b, type_of(&*b));
+    println!("*b = {:?} ({})", *b, mytools::type_of(&*b));
 
     let list = Cons(1, Box::new(Cons(2, Box::new(Cons(3, Box::new(Nil))))));
-    println!("l = {:?} ({})", list, type_of(&list));
+    println!("l = {:?} ({})", list, mytools::type_of(&list));
 
     let mb = MyBox::new(*b);
-    println!("*mb = {:?} ({})", *mb, type_of(&*mb));
+    println!("*mb = {:?} ({})", *mb, mytools::type_of(&*mb));
 
     let m = MyBox::new(String::from("Rust"));
     hello(&m);
