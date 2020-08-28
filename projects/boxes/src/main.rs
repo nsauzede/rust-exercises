@@ -1,6 +1,6 @@
 use crate::List::{Cons, Nil};
-use std::ops::Deref;
 use mytools;
+use std::ops::Deref;
 
 #[derive(Debug)]
 enum List {
