@@ -12,7 +12,9 @@ impl Post {
     }
 
     pub fn add_text(&mut self, text: &str) {
-        self.content.push_str(text);
+        if self.state.as_ref().unwrap().can_add() {
+            self.content.push_str(text);
+        }
     }
 
     pub fn content(&self) -> &str {
@@ -22,6 +24,12 @@ impl Post {
     pub fn request_review(&mut self) {
         if let Some(s) = self.state.take() {
             self.state = Some(s.request_review())
+        }
+    }
+
+    pub fn reject(&mut self) {
+        if let Some(s) = self.state.take() {
+            self.state = Some(s.reject())
         }
     }
 
@@ -35,7 +43,10 @@ impl Post {
 trait State {
     fn request_review(self: Box<Self>) -> Box<dyn State>;
     fn approve(self: Box<Self>) -> Box<dyn State>;
-
+    fn reject(self: Box<Self>) -> Box<dyn State>;
+    fn can_add(&self) -> bool {
+        false
+    }
     fn content<'a>(&self, _post: &'a Post) -> &'a str {
         ""
     }
@@ -48,6 +59,12 @@ impl State for Draft {
         Box::new(PendingReview {})
     }
 
+    fn can_add(&self) -> bool {
+        true
+    }
+    fn reject(self: Box<Self>) -> Box<dyn State> {
+        self
+    }
     fn approve(self: Box<Self>) -> Box<dyn State> {
         self
     }
@@ -60,6 +77,24 @@ impl State for PendingReview {
         self
     }
 
+    fn reject(self: Box<Self>) -> Box<dyn State> {
+        Box::new(Draft {})
+    }
+    fn approve(self: Box<Self>) -> Box<dyn State> {
+        Box::new(Scheduled {})
+    }
+}
+
+struct Scheduled {}
+
+impl State for Scheduled {
+    fn request_review(self: Box<Self>) -> Box<dyn State> {
+        self
+    }
+
+    fn reject(self: Box<Self>) -> Box<dyn State> {
+        Box::new(Draft {})
+    }
     fn approve(self: Box<Self>) -> Box<dyn State> {
         Box::new(Published {})
     }
@@ -72,6 +107,9 @@ impl State for Published {
         self
     }
 
+    fn reject(self: Box<Self>) -> Box<dyn State> {
+        self
+    }
     fn approve(self: Box<Self>) -> Box<dyn State> {
         self
     }
