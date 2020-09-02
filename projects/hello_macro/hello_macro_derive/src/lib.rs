@@ -44,3 +44,15 @@ pub fn route(attr: TokenStream, item: TokenStream) -> TokenStream {
     gen.into()
 //    item
 }
+
+#[proc_macro]
+pub fn sql(input: TokenStream) -> TokenStream {
+    let i = input.to_string();
+    let gen = quote! {
+//        println!("HELLO");
+//        fn hello() { println!("hello quote attr={:#?} item={:#?}", #a, #i); }
+//        #i
+        format!("input={:#?}", #i)
+    };
+    gen.into()
+}
