@@ -38,7 +38,8 @@ fn handle_connection(mut stream: TcpStream) {
         ("HTTP/1.1 404 NOT FOUND\r\n\r\n", "404.html")
     };
 
-    let contents = fs::read_to_string(filename).unwrap();
+    let contents = fs::read_to_string(filename)
+        .unwrap_or_else(|_| panic!("Oops, couldn't read file '{}'", filename));
 
     let response = format!("{}{}", status_line, contents);
 
