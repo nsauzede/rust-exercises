@@ -1,5 +1,7 @@
 /*
 overloadable ops :
+
+Binary :
 + +=
 - -=
 / /=
@@ -10,7 +12,9 @@ overloadable ops :
 ^ ^=
 % %/
 
--, !
+Unary :
+! bitwise not (sic !!)
+- *removed* was related to pointer functionality
 
 */
 use std::ops::Add;
